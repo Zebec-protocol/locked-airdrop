@@ -1,9 +1,10 @@
 import base58
 from solana.keypair import Keypair
 
-
+# ADD VALUES HERE
 LOCKED_AIRDROP_SECRET_KEY = ""
 _SENDER_WALLET_ADDRESS_PRIVATE_KEY = ""
+TOKEN_MINT_ADDRESS = ""
 
 INIT_STREAM_INSTRUCTION = 3
 WITHDRAW_TOKEN_STRING = "withdraw_token"

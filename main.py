@@ -15,7 +15,7 @@ from solana.rpc.commitment import Confirmed
 from solana.transaction import Transaction, TransactionInstruction, AccountMeta
 
 
-from constants import API_ZEBEC_URL, FROM_WALLET_KEYPAIR, INIT_STREAM_INSTRUCTION, LOCKED_AIRDROP_SECRET_KEY, RPC_CLUSTER_URL, TOKEN_PROGRAM_ID, WITHDRAW_TOKEN_STRING, ZEBEC_PROGRAM_ID
+from constants import API_ZEBEC_URL, FROM_WALLET_KEYPAIR, INIT_STREAM_INSTRUCTION, LOCKED_AIRDROP_SECRET_KEY, RPC_CLUSTER_URL, TOKEN_MINT_ADDRESS, TOKEN_PROGRAM_ID, WITHDRAW_TOKEN_STRING, ZEBEC_PROGRAM_ID
 from utils import STREAM_PDA_SCHEMA
 
 
@@ -135,7 +135,6 @@ class LockedAirdrop:
             "Authorization": f"Bearer {self.access_token}"
         }
 
-        # return True
         response = None
         try:
             response = requests.request("POST", url, headers=headers, data=payload)
@@ -159,11 +158,8 @@ class LockedAirdrop:
         response = requests.request("POST", url, headers=headers, data=payload)
 
         print(response)
-
         # result = response.json()
-
         # return result["access_token"]
-        # return "access_token"
 
     def check_error(self):
         if self.master_file:
@@ -278,48 +274,16 @@ class LockedAirdrop:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="CSV file location and Token Mint Address."
-    )
-
-    parser.add_argument(
-        "-f", "--file",
-        metavar="",
-        dest="csv_file_location",
-        type=str,
-        required=True,
-        help="relative file location of CSV file."
-    )
-
-    parser.add_argument(
-        "-t", "--token-mint-address",
-        metavar="",
-        dest="token_mint_address",
-        required=False,
-        type=str,
-        help="SPL token mint address"
-    )
-
-    args = parser.parse_args()
-
-    if args.csv_file_location == None:
-        print("file location of CSV is required!")
-        sys.exit(1)
-    
-    if args.token_mint_address == None:
-        print("token mint address is missing")
-        sys.exit(1)
 
     locked_airdrop = LockedAirdrop()
-
     locked_airdrop.initialize(
-        master_file="./wallet.csv",
+        master_file="wallet.csv",
         output_file= "./wallet_response.csv",
         receiver_key="recipient",
         start_time_key="start_time",
         end_time_key="end_time",
         amount_key="amount",
-        token_mint_address=args.token_mint_address,
+        token_mint_address=TOKEN_MINT_ADDRESS,
         run_script=True,
         log=True,
         debug=True    
