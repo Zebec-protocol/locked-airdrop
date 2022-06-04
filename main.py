@@ -19,18 +19,6 @@ from constants import API_ZEBEC_URL, FROM_WALLET_KEYPAIR, INIT_STREAM_INSTRUCTIO
 from utils import STREAM_PDA_SCHEMA
 
 
-# FROM_WALLET_ADDRESS = "BTfhgEhrAQKj2xKS83N7aPcd2GhHgMMH9R76hweChCCF"
-
-
-def get_recent_blockhash(client):
-    return (
-        client.get_recent_blockhash()
-            ['result']
-            ['value']
-            ['blockhash']
-            .encode('utf-8')
-    )
-
 class LockedAirdrop:
 
     def __init__(self):
