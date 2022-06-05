@@ -1,5 +1,4 @@
 import json
-from os import access
 import requests
 
 import pandas as pd
