@@ -5,6 +5,7 @@ from solana.keypair import Keypair
 LOCKED_AIRDROP_SECRET_KEY = ""
 _SENDER_WALLET_ADDRESS_PRIVATE_KEY = ""
 TOKEN_MINT_ADDRESS = ""
+TOKEN_DECIMAL = 1000000000  # replace it with the Decimals of your token
 
 INIT_STREAM_INSTRUCTION = 3
 WITHDRAW_TOKEN_STRING = "withdraw_token"

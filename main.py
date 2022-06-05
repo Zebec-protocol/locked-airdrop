@@ -12,7 +12,7 @@ from solana.rpc.commitment import Confirmed
 from solana.transaction import Transaction, TransactionInstruction, AccountMeta
 
 
-from constants import API_ZEBEC_URL, FROM_WALLET_KEYPAIR, INIT_STREAM_INSTRUCTION, LOCKED_AIRDROP_SECRET_KEY, RPC_CLUSTER_URL, TOKEN_MINT_ADDRESS, TOKEN_PROGRAM_ID, WITHDRAW_TOKEN_STRING, ZEBEC_PROGRAM_ID
+from constants import API_ZEBEC_URL, FROM_WALLET_KEYPAIR, INIT_STREAM_INSTRUCTION, LOCKED_AIRDROP_SECRET_KEY, RPC_CLUSTER_URL, TOKEN_DECIMAL, TOKEN_MINT_ADDRESS, TOKEN_PROGRAM_ID, WITHDRAW_TOKEN_STRING, ZEBEC_PROGRAM_ID
 from utils import STREAM_PDA_SCHEMA
 
 
@@ -51,7 +51,7 @@ class LockedAirdrop:
             "instruction": INIT_STREAM_INSTRUCTION,
             "start_time": self.start_time,
             "end_time": self.end_time,
-            "amount": self.amount * 1000000000
+            "amount": self.amount * TOKEN_DECIMAL      
         })
 
         instruction = TransactionInstruction(
