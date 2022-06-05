@@ -1,4 +1,5 @@
 import json
+from os import access
 import requests
 
 import pandas as pd
@@ -153,9 +154,8 @@ class LockedAirdrop:
 
         response = requests.request("POST", url, headers=headers, data=payload)
 
-        print(response)
-        result = response.json()
-        return result["access_token"]
+        token = response.json()["access_token"]
+        return token
 
     def check_error(self):
         if self.master_file:
@@ -243,7 +243,7 @@ class LockedAirdrop:
                     self.receiver = row[self.receiver_key]
                     self.start_time = row[self.start_time_key]
                     self.end_time = row[self.end_time_key]
-                    self.amount = row[self.amount_key]
+                    self.amount = row[self.amount_key] * 1000000000
 
                     print(f"{index+1}/{self.df.shape[0]}")
                     if self.log:
