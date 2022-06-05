@@ -51,7 +51,7 @@ class LockedAirdrop:
             "instruction": INIT_STREAM_INSTRUCTION,
             "start_time": self.start_time,
             "end_time": self.end_time,
-            "amount": self.amount
+            "amount": self.amount * 1000000000
         })
 
         instruction = TransactionInstruction(
@@ -242,7 +242,7 @@ class LockedAirdrop:
                     self.receiver = row[self.receiver_key]
                     self.start_time = row[self.start_time_key]
                     self.end_time = row[self.end_time_key]
-                    self.amount = row[self.amount_key] * 1000000000
+                    self.amount = row[self.amount_key]
 
                     print(f"{index+1}/{self.df.shape[0]}")
                     if self.log:
