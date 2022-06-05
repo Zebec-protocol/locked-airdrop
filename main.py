@@ -135,14 +135,16 @@ class LockedAirdrop:
             "Authorization": f"Bearer {self.access_token}"
         }
 
-        response = None
-        try:
-            response = requests.request("POST", url, headers=headers, data=payload)
-        except Exception as e:
-            print(e, "Exception on saving metadata")
+        return True
+
+        # response = None
+        # try:
+        #     response = requests.request("POST", url, headers=headers, data=payload)
+        # except Exception as e:
+        #     print(e, "Exception on saving metadata")
 
         
-        return response
+        # return response
 
     def get_access_token(self):
 
