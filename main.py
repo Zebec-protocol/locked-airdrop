@@ -1,7 +1,4 @@
-from doctest import master
-import sys
 import json
-import argparse
 import requests
 
 import pandas as pd
@@ -28,7 +25,7 @@ class LockedAirdrop:
         self.sender_address = self.sender_keypair.public_key
         self.zebec_program_address = PublicKey(ZEBEC_PROGRAM_ID)
         self.token_program_address = PublicKey(TOKEN_PROGRAM_ID)
-        self.access_token = None #self.get_access_token()
+        self.access_token = self.get_access_token()
     
     def get_recent_blockhash(self):
         return (
@@ -115,7 +112,7 @@ class LockedAirdrop:
                 }
             }
 
-        except Exception as e:
+        except:
             return {
                 "status": "error",
                 "message": "transaction failed to init",
@@ -135,16 +132,13 @@ class LockedAirdrop:
             "Authorization": f"Bearer {self.access_token}"
         }
 
-        return True
-
-        # response = None
-        # try:
-        #     response = requests.request("POST", url, headers=headers, data=payload)
-        # except Exception as e:
-        #     print(e, "Exception on saving metadata")
-
-        
-        # return response
+        # return True
+        response = None
+        try:
+            response = requests.request("POST", url, headers=headers, data=payload)
+        except Exception as e:
+            print(e, "Exception on saving metadata")
+        return response
 
     def get_access_token(self):
 
@@ -160,8 +154,8 @@ class LockedAirdrop:
         response = requests.request("POST", url, headers=headers, data=payload)
 
         print(response)
-        # result = response.json()
-        # return result["access_token"]
+        result = response.json()
+        return result["access_token"]
 
     def check_error(self):
         if self.master_file:
