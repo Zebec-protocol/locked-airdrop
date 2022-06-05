@@ -28,7 +28,7 @@ class LockedAirdrop:
         self.sender_address = self.sender_keypair.public_key
         self.zebec_program_address = PublicKey(ZEBEC_PROGRAM_ID)
         self.token_program_address = PublicKey(TOKEN_PROGRAM_ID)
-        self.access_token = self.get_access_token()
+        self.access_token = None #self.get_access_token()
     
     def get_recent_blockhash(self):
         return (
