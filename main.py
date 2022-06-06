@@ -83,6 +83,7 @@ class LockedAirdrop:
                 "end": self.end_time,
                 "token": self.token_mint_address,
                 "amount": self.amount,
+                "transaction_name": self.transaction_name,
                 "status": "scheduled",
                 "pda": str(escrow.public_key),
                 "withdrawn": 0,
@@ -96,6 +97,7 @@ class LockedAirdrop:
                     "message": "failed to save tx meta data",
                     "data": {
                         "receiver": self.receiver,
+                        "transaction_name": self.transaction_name,
                         "amount": self.amount,
                         "pda": None,
                         "transactionHash": None,
@@ -106,6 +108,7 @@ class LockedAirdrop:
                 "message": "transaction initiated",
                 "data": {
                     "receiver": self.receiver,
+                    "transaction_name": self.transaction_name,
                     "amount": self.amount,
                     "transactionHash": signature,
                     "pda": str(escrow.public_key)
@@ -118,6 +121,7 @@ class LockedAirdrop:
                 "message": "transaction failed to init",
                 "data": {
                         "receiver": self.receiver,
+                        "transaction_name": self.transaction_name,
                         "amount": self.amount,
                         "transactionHash": None,
                         "pda": None
@@ -171,6 +175,13 @@ class LockedAirdrop:
                 quit()
             
             try:
+                self.df = pd.read_csv(self.transaction_name_key)
+            except:
+                if self.debug:
+                    print("ERROR: transaction_name_key not found in master_file")
+                quit()
+            
+            try:
                 self.df[self.receiver_key]
             except:
                 if self.debug:
@@ -206,8 +217,8 @@ class LockedAirdrop:
 
     def initialize(
         self, master_file=False, output_file=False, receiver_key=False,
-        start_time_key=False, end_time_key=False, amount_key=False, token_mint_address=False,
-        run_script=False, log=False, debug=False
+        start_time_key=False, end_time_key=False, amount_key=False, transaction_name_key=False,
+        token_mint_address=False, run_script=False, log=False, debug=False
     ):
         data = []
         self.master_file = master_file
@@ -216,6 +227,7 @@ class LockedAirdrop:
         self.start_time_key = start_time_key
         self.end_time_key = end_time_key
         self.amount_key = amount_key
+        self.transaction_name_key = transaction_name_key
         self.token_mint_address = token_mint_address
         self.script = run_script
         self.debug = debug
@@ -243,6 +255,7 @@ class LockedAirdrop:
                     self.start_time = row[self.start_time_key]
                     self.end_time = row[self.end_time_key]
                     self.amount = row[self.amount_key]
+                    self.transaction_name = row[self.transaction_name_key]
 
                     print(f"{index+1}/{self.df.shape[0]}")
                     if self.log:
@@ -259,6 +272,7 @@ class LockedAirdrop:
                     print(f"\tFailed")
                     metadata = {
                         "receiver": self.receiver,
+                        "transaction_name": self.transaction_name,
                         "amount": self.amount,
                         "transactionHash": None,
                         "pda": None
@@ -278,6 +292,7 @@ if __name__ == "__main__":
         start_time_key="start_time",
         end_time_key="end_time",
         amount_key="amount",
+        transaction_name_key="transaction_name",
         token_mint_address=TOKEN_MINT_ADDRESS,
         run_script=True,
         log=True,
