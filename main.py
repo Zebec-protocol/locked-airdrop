@@ -175,7 +175,7 @@ class LockedAirdrop:
                 quit()
             
             try:
-                self.df = pd.read_csv(self.transaction_name_key)
+                self.df[self.transaction_name_key]
             except:
                 if self.debug:
                     print("ERROR: transaction_name_key not found in master_file")
