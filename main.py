@@ -82,7 +82,7 @@ class LockedAirdrop:
                 "start": self.start_time,
                 "end": self.end_time,
                 "token": self.token_mint_address,
-                "amount": int(self.amount),
+                "amount": self.amount,
                 "transaction_name": self.transaction_name,
                 "status": "scheduled",
                 "pda": str(escrow.public_key),
@@ -98,7 +98,7 @@ class LockedAirdrop:
                     "data": {
                         "receiver": self.receiver,
                         "transaction_name": self.transaction_name,
-                        "amount": int(self.amount),
+                        "amount": self.amount,
                         "pda": None,
                         "transactionHash": None,
                     }
@@ -109,7 +109,7 @@ class LockedAirdrop:
                 "data": {
                     "receiver": self.receiver,
                     "transaction_name": self.transaction_name,
-                    "amount": int(self.amount),
+                    "amount": self.amount,
                     "transactionHash": signature,
                     "pda": str(escrow.public_key)
                 }
@@ -122,7 +122,7 @@ class LockedAirdrop:
                 "data": {
                         "receiver": self.receiver,
                         "transaction_name": self.transaction_name,
-                        "amount": int(self.amount),
+                        "amount": self.amount,
                         "transactionHash": None,
                         "pda": None
                     }
@@ -273,7 +273,7 @@ class LockedAirdrop:
                     metadata = {
                         "receiver": self.receiver,
                         "transaction_name": self.transaction_name,
-                        "amount": int(self.amount),
+                        "amount": self.amount,
                         "transactionHash": None,
                         "pda": None
                     }
