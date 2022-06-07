@@ -51,7 +51,7 @@ class LockedAirdrop:
             "instruction": INIT_STREAM_INSTRUCTION,
             "start_time": self.start_time,
             "end_time": self.end_time,
-            "amount": self.amount * TOKEN_DECIMAL      
+            "amount": int(self.amount * TOKEN_DECIMAL)    
         })
 
         instruction = TransactionInstruction(
@@ -82,7 +82,7 @@ class LockedAirdrop:
                 "start": self.start_time,
                 "end": self.end_time,
                 "token": self.token_mint_address,
-                "amount": self.amount,
+                "amount": int(self.amount),
                 "transaction_name": self.transaction_name,
                 "status": "scheduled",
                 "pda": str(escrow.public_key),
@@ -98,7 +98,7 @@ class LockedAirdrop:
                     "data": {
                         "receiver": self.receiver,
                         "transaction_name": self.transaction_name,
-                        "amount": self.amount,
+                        "amount": int(self.amount),
                         "pda": None,
                         "transactionHash": None,
                     }
@@ -109,7 +109,7 @@ class LockedAirdrop:
                 "data": {
                     "receiver": self.receiver,
                     "transaction_name": self.transaction_name,
-                    "amount": self.amount,
+                    "amount": int(self.amount),
                     "transactionHash": signature,
                     "pda": str(escrow.public_key)
                 }
@@ -122,7 +122,7 @@ class LockedAirdrop:
                 "data": {
                         "receiver": self.receiver,
                         "transaction_name": self.transaction_name,
-                        "amount": self.amount,
+                        "amount": int(self.amount),
                         "transactionHash": None,
                         "pda": None
                     }
@@ -273,7 +273,7 @@ class LockedAirdrop:
                     metadata = {
                         "receiver": self.receiver,
                         "transaction_name": self.transaction_name,
-                        "amount": self.amount,
+                        "amount": int(self.amount),
                         "transactionHash": None,
                         "pda": None
                     }
