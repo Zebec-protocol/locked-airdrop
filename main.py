@@ -6,6 +6,7 @@ import pandas as pd
 from solana.publickey import PublicKey
 from solana.keypair import Keypair
 
+from time import time, sleep
 from solana.rpc.api import Client
 from solana.system_program import SYS_PROGRAM_ID
 from solana.rpc.commitment import Confirmed
@@ -15,6 +16,13 @@ from solana.transaction import Transaction, TransactionInstruction, AccountMeta
 from constants import API_ZEBEC_URL, FROM_WALLET_KEYPAIR, INIT_STREAM_INSTRUCTION, LOCKED_AIRDROP_SECRET_KEY, RPC_CLUSTER_URL, TOKEN_DECIMAL, TOKEN_MINT_ADDRESS, TOKEN_PROGRAM_ID, WITHDRAW_TOKEN_STRING, ZEBEC_PROGRAM_ID
 from utils import STREAM_PDA_SCHEMA
 
+from typing import NewType
+
+Commitment = NewType("Commitment", str)
+Finalized = Commitment("finalized")
+Processed = Commitment("processed")
+
+COMMITMENT_RANKS = {Processed: 0, Confirmed: 1, Finalized: 2}
 
 class LockedAirdrop:
 
@@ -35,6 +43,30 @@ class LockedAirdrop:
             ['blockhash']
             .encode('utf-8')
     )
+
+    def confirm_transaction_again(self, tx_sig, commitment, sleep_seconds = 0.5):
+        
+        timeout = time() + 65
+        while time() < timeout:
+            resp = self.client.get_signature_statuses([tx_sig])
+            maybe_rpc_error = resp.get("error")
+            if maybe_rpc_error is not None:
+                print("An error occured may be rpc error")
+            resp_value = resp["result"]["value"][0]
+
+            if resp_value is not None:
+                confirmation_status = resp_value["confirmationStatus"]
+                confirmation_rank = COMMITMENT_RANKS[confirmation_status]
+                commitment_rank = COMMITMENT_RANKS[commitment]
+                if confirmation_rank >= commitment_rank:
+                    break
+            sleep(sleep_seconds)
+        else:
+            maybe_rpc_error = resp.get("error")
+            if maybe_rpc_error is not None:
+                print("may be rpc")
+            print("unconfirmed transaction")
+        return resp
 
     def init_stream(self):
         receiver_address = PublicKey(self.receiver)
@@ -75,7 +107,8 @@ class LockedAirdrop:
             transaction.fee_payer = self.sender_address
 
             signature = self.client.send_transaction(transaction, self.sender_keypair, escrow)["result"]
-            self.client.confirm_transaction(signature, Confirmed)
+            # modify this
+            self.confirm_transaction_again(signature, Confirmed)
 
             data = {
                 "receiver": self.receiver,
